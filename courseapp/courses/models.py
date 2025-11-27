@@ -57,7 +57,7 @@ class Interaction(BaseModel):
         abstract = True
 
 class Comment(Interaction):
-    content = models.TextField(null=False)
+    content = models.TextField(null=False, blank=False)
 
     def __str__(self):
         return self.content

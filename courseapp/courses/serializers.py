@@ -54,11 +54,25 @@ class UserSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        # import pdb
+        # pdb.set_trace()
         data["avatar"] = instance.avatar.url
         return data
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # import pdb
+        # pdb.set_trace()
+        data['user'] = UserSerializer(instance.user).data
+        return data
+
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'created_date', 'user']
+        fields = ['id', 'content', 'created_date', 'user', 'lesson']
+
+        extra_kwargs = {
+            'lesson': {
+                'write_only': True
+            }
+        }
