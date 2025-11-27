@@ -1,0 +1,49 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>THỐNG KÊ KHÓA HỌC THEO DANH MỤC</h1>
+
+<ul>
+    {% for s in stats %}
+    <li><strong>{{ s.name }}</strong>: {{ s.count }}  </li>
+    {% endfor %}
+</ul>
+
+<div style="width:50%">
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+window.onload = function() {
+    let data = [];
+    let labels = [];
+
+    {% for s in stats %}
+    data.push({{ s.count }})
+    labels.push('{{ s.name }}')
+    {% endfor %}
+
+    const ctx = document.getElementById('myChart');
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '# Thống kê khóa học',
+            data: data,
+            borderWidth: 1,
+            backgroundColor: ['red', 'green', 'blue']
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+}
+</script>
+{% endblock %}
